@@ -27,6 +27,21 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.post("/api/books", (req, res, next) => {
+  delete req.body._id;
+  const book = new Book({
+    ...req.body,
+  });
+  book
+    .save()
+    .then(() => {
+      res.status(201).json(book);
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+});
+
 app.get("/api/books", (req, res, next) => {
   Book.find()
     .then((books) => {
@@ -37,30 +52,31 @@ app.get("/api/books", (req, res, next) => {
     });
 });
 
-app.post("/api/books", (req, res, next) => {
-  const book = new Book({
-    userId: "1",
-    title: "The Lightning Thief",
-    author: "Rick Riordan",
-    imageUrl:
-      "https://www.amazon.com/Lightning-Thief-Percy-Jackson-Olympians/dp/0786838655",
-    year: "2005",
-    genre: "fantasy",
-    ratings: [
-      {
-        userId: "1",
-        grade: 5,
-      },
-    ],
-    averageRating: 4.5,
-  });
-  book
-    .save()
-    .then(() => {
-      res.status(201).json(book);
+app.get("/api/books/:id", (req, res, next) => {
+  Book.findById(req.params.id)
+    .then((book) => {
+      res.status(200).json(book);
     })
     .catch((error) => {
-      res.status(400).json({ error });
+      res.status(404).json({ error });
+    });
+});
+
+app.put("/api/books/:id", (req, res, next) => {
+  Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    .then(() => res.status(200).json({ message: "Book updated!" }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
+app.delete("/api/books/:id", (req, res, next) => {
+  Book.findById(req.params.id)
+    .then((book) => {
+      Book.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: "Book deleted!" }))
+        .catch((error) => res.status(400).json({ error }));
+    })
+    .catch((error) => {
+      res.status(401).json({ error });
     });
 });
 

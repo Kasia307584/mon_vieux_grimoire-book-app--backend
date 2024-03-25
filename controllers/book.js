@@ -3,7 +3,7 @@ const bookService = require("../services/bookService");
 exports.createBook = (req, res, next) => {
   delete req.body._id;
   bookService
-    .createBook(req.body)
+    .createBook(req.body.book)
     .then((book) => {
       res.status(201).json(book);
     })
@@ -36,7 +36,7 @@ exports.getOneBook = (req, res, next) => {
 
 exports.modifyBook = (req, res, next) => {
   bookService
-    .modifyBook(req.params.id, req.body)
+    .modifyBook(req.params.id, req.body.book)
     .then(() => res.status(200).json({ message: "Book updated!" }))
     .catch((error) => res.status(400).json({ error }));
 };

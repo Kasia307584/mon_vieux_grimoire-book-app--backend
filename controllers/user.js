@@ -1,4 +1,4 @@
-const userService = require("../services/user");
+const userService = require("../services/userService");
 const bcrypt = require("bcrypt");
 
 exports.signup = (req, res, next) => {

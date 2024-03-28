@@ -1,12 +1,15 @@
 const Book = require("../models/Book");
 
-exports.createBook = (bookData, authData) => {
+exports.createBook = (bookData, reqData) => {
   const book = new Book({
     ...bookData,
-    userId: authData.userId,
+    userId: reqData.auth.userId,
+    imageUrl: `${reqData.protocol}://${reqData.get("host")}/images/${
+      reqData.file.filename
+    }`,
     ratings: [
       {
-        userId: authData.userId,
+        userId: reqData.auth.userId,
         grade: bookData.ratings.find((element) => (element = bookData.userId))
           .grade,
       },

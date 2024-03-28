@@ -1,9 +1,15 @@
 const bookService = require("../services/bookService");
 
 exports.createBook = (req, res, next) => {
+  // dois-je parser req.body.book ? Postman me renvoie une erreur si je le fais
+  // const bookObject = JSON.parse(req.body.book);
+  // dois-je supprimer _id ?
   delete req.body._id;
+  // il semble que ca ne supprime pas userId - essaye Postman mais d'abord commente userId dans bookService
+  delete req.body.userId;
+  // delete req.body.ratings;
   bookService
-    .createBook(req.body.book)
+    .createBook(req.body.book, req.auth)
     .then((book) => {
       res.status(201).json(book);
     })

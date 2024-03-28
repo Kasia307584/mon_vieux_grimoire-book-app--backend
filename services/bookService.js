@@ -1,8 +1,16 @@
 const Book = require("../models/Book");
 
-exports.createBook = (bookData) => {
+exports.createBook = (bookData, authData) => {
   const book = new Book({
     ...bookData,
+    userId: authData.userId,
+    ratings: [
+      {
+        userId: authData.userId,
+        grade: bookData.ratings.find((element) => (element = bookData.userId))
+          .grade,
+      },
+    ],
   });
   return book.save();
 };

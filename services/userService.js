@@ -7,4 +7,7 @@ exports.createUser = (userData, hash) => {
   });
   return user.save();
 };
-exports.findUser = () => {};
+
+exports.findUser = (email) => {
+  return User.findOne({ email: email });
+};

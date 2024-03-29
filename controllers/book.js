@@ -41,7 +41,7 @@ exports.getOneBook = (req, res, next) => {
 
 exports.modifyBook = (req, res, next) => {
   bookService
-    .modifyBook(req.params.id, req.body.book)
+    .modifyBook(req.params.id, req.body.book, req.auth.userId, req)
     .then(() => res.status(200).json({ message: "Book updated!" }))
     .catch((error) => res.status(400).json({ error }));
 };

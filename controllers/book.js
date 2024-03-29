@@ -2,11 +2,8 @@ const bookService = require("../services/bookService");
 
 exports.createBook = (req, res, next) => {
   const bookObject = JSON.parse(req.body.book);
-  // dois-je supprimer _id ?
   delete req.body._id;
-  // il semble que ca ne supprime pas userId - essaye Postman mais d'abord commente userId dans bookService
   delete req.body.userId;
-  // delete req.body.ratings;
   bookService
     .createBook(bookObject, req)
     .then((book) => {
@@ -41,7 +38,7 @@ exports.getOneBook = (req, res, next) => {
 
 exports.modifyBook = (req, res, next) => {
   bookService
-    .modifyBook(req.params.id, req.body.book, req.auth.userId, req)
+    .modifyBook(req)
     .then(() => res.status(200).json({ message: "Book updated!" }))
     .catch((error) => res.status(400).json({ error }));
 };

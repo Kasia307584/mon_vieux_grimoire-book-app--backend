@@ -5,7 +5,7 @@ exports.createBook = (bookData, reqData) => {
     ...bookData,
     userId: reqData.auth.userId,
     imageUrl: `${reqData.protocol}://${reqData.get("host")}/images/${
-      reqData.file.filename
+      reqData.image.ref
     }`,
     ratings: [
       {
@@ -26,23 +26,26 @@ exports.getOneBook = (id) => {
   return Book.findById(id);
 };
 
-exports.modifyBook = async (id, bookData, userId, reqData) => {
+exports.modifyBook = async (reqData) => {
   const bookObject = reqData.file
     ? {
-        ...JSON.parse(bookData),
+        ...JSON.parse(reqData.body.book),
         imageUrl: `${reqData.protocol}://${reqData.get("host")}/images/${
-          reqData.file.filename
+          reqData.image.ref
         }`,
       }
     : { ...reqData.body };
 
   delete bookObject.userId;
-  Book.findOne({ _id: id })
+  Book.findOne({ _id: reqData.params.id })
     .then((book) => {
-      if (book.userId !== userId) {
+      if (book.userId !== reqData.auth.userId) {
         return res.status(401).json({ message: "Not authorized" });
       } else {
-        return Book.updateOne({ _id: id }, { ...bookObject, _id: id });
+        return Book.updateOne(
+          { _id: reqData.params.id },
+          { ...bookObject, _id: reqData.params.id }
+        );
       }
     })
     .catch((error) => {

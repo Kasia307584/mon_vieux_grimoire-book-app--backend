@@ -1,11 +1,8 @@
 const bookService = require("../services/bookService");
 
 exports.createBook = (req, res, next) => {
-  const bookObject = JSON.parse(req.body.book);
-  delete req.body._id;
-  delete req.body.userId;
   bookService
-    .createBook(bookObject, req)
+    .createBook(req)
     .then((book) => {
       res.status(201).json(book);
     })
@@ -40,7 +37,13 @@ exports.modifyBook = (req, res, next) => {
   bookService
     .modifyBook(req)
     .then(() => res.status(200).json({ message: "Book updated!" }))
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => {
+      if (error.message === "403: unauthorized request") {
+        res.status(403).json({ message: "403: unauthorized request" });
+      } else {
+        res.status(400).json({ error });
+      }
+    });
 };
 
 exports.deleteBook = (req, res, next) => {

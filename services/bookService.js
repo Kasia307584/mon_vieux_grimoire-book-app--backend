@@ -1,19 +1,17 @@
 const Book = require("../models/Book");
 
-exports.createBook = (bookData, reqData) => {
+exports.createBook = (reqData) => {
+  const bookObject = JSON.parse(reqData.body.book);
+  delete reqData.body._id;
+  delete reqData.body.userId;
   const book = new Book({
-    ...bookData,
+    ...bookObject,
     userId: reqData.auth.userId,
     imageUrl: `${reqData.protocol}://${reqData.get("host")}/images/${
       reqData.image.ref
     }`,
-    ratings: [
-      {
-        userId: reqData.auth.userId,
-        grade: bookData.ratings.find((element) => (element = bookData.userId))
-          .grade,
-      },
-    ],
+    ratings: [],
+    averageRating: 0,
   });
   return book.save();
 };
@@ -40,7 +38,7 @@ exports.modifyBook = async (reqData) => {
   Book.findOne({ _id: reqData.params.id })
     .then((book) => {
       if (book.userId !== reqData.auth.userId) {
-        return res.status(401).json({ message: "Not authorized" });
+        return Promise.reject(new Error("403: unauthorized request"));
       } else {
         return Book.updateOne(
           { _id: reqData.params.id },
@@ -49,7 +47,7 @@ exports.modifyBook = async (reqData) => {
       }
     })
     .catch((error) => {
-      return res.status(400).json({ error });
+      return Promise.reject(new Error(error.message));
     });
 };
 

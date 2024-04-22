@@ -1,4 +1,5 @@
 const bookService = require("../services/bookService");
+const Book = require("../models/Book");
 
 exports.createBook = (req, res, next) => {
   bookService
@@ -51,4 +52,45 @@ exports.deleteBook = (req, res, next) => {
     .deleteBook(req.params.id)
     .then(() => res.status(200).json({ message: "Book deleted!" }))
     .catch((error) => res.status(400).json({ error }));
+};
+
+exports.rateBook = (req, res, next) => {
+  // bookService
+  //   .rateBook(req)
+  Book.findById(req.params.id)
+    .then((book) => {
+      let alreadyRatedByUser = false;
+      book.ratings.forEach((rating) => {
+        if (rating.userId === req.auth.userId) {
+          alreadyRatedByUser = true;
+        }
+      });
+      if (alreadyRatedByUser) {
+        return Promise.reject(new Error("User has already rated this book"));
+      }
+      book.ratings.push({ userId: req.auth.userId, grade: req.body.rating });
+      book.averageRating = Math.round(
+        book.ratings.reduce((total, current) => total + current.grade, 0) /
+          book.ratings.length
+      );
+      book
+        .save()
+        .then((book) => {
+          res.status(200).json(book);
+        })
+        .catch((error) => {
+          return Promise.reject(new Error(error.message));
+        });
+    })
+    // .then(() => {
+    //   console.log("We are in the then block");
+    //   res.status(200).json({ message: "The book has been rated" });
+    // })
+    .catch((error) => {
+      if (error.message === "User has already rated this book") {
+        res.status(403).json({ message: "User has already rated this book" });
+      } else {
+        res.status(400).json({ error });
+      }
+    });
 };

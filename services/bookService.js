@@ -54,3 +54,34 @@ exports.modifyBook = async (reqData) => {
 exports.deleteBook = (id) => {
   return Book.deleteOne({ _id: id });
 };
+
+// exports.rateBook = (reqData) => {
+//   Book.findById(reqData.params.id)
+//     .then((book) => {
+//       let alreadyRatedByUser = false;
+//       book.ratings.forEach((rating) => {
+//         if (rating.userId === reqData.auth.userId) {
+//           alreadyRatedByUser = true;
+//         }
+//       });
+//       if (alreadyRatedByUser) {
+//         return Promise.reject(new Error("User has already rated this book"));
+//       }
+//       book.ratings.push({
+//         userId: reqData.auth.userId,
+//         grade: reqData.body.rating,
+//       });
+//       book.averageRating = Math.round(
+//         book.ratings.reduce((total, current) => total + current.grade, 0) /
+//           book.ratings.length
+//       );
+//       return book.save();
+//     })
+//     .catch((error) => {
+//       return Promise.reject(new Error(error.message));
+//     });
+// };
+
+exports.getBestRated = () => {
+  return Book.find({}).sort({ averageRating: -1 }).limit(3);
+};

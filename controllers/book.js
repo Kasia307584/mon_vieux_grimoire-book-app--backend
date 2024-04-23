@@ -94,3 +94,14 @@ exports.rateBook = (req, res, next) => {
       }
     });
 };
+
+exports.getBestRated = (req, res, next) => {
+  bookService
+    .getBestRated()
+    .then((books) => {
+      res.status(200).json(books);
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};

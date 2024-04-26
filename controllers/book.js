@@ -55,37 +55,11 @@ exports.deleteBook = (req, res, next) => {
 };
 
 exports.rateBook = (req, res, next) => {
-  // bookService
-  //   .rateBook(req)
-  Book.findById(req.params.id)
+  bookService
+    .rateBook(req)
     .then((book) => {
-      let alreadyRatedByUser = false;
-      book.ratings.forEach((rating) => {
-        if (rating.userId === req.auth.userId) {
-          alreadyRatedByUser = true;
-        }
-      });
-      if (alreadyRatedByUser) {
-        return Promise.reject(new Error("User has already rated this book"));
-      }
-      book.ratings.push({ userId: req.auth.userId, grade: req.body.rating });
-      book.averageRating = Math.round(
-        book.ratings.reduce((total, current) => total + current.grade, 0) /
-          book.ratings.length
-      );
-      book
-        .save()
-        .then((book) => {
-          res.status(200).json(book);
-        })
-        .catch((error) => {
-          return Promise.reject(new Error(error.message));
-        });
+      res.status(200).json(book);
     })
-    // .then(() => {
-    //   console.log("We are in the then block");
-    //   res.status(200).json({ message: "The book has been rated" });
-    // })
     .catch((error) => {
       if (error.message === "User has already rated this book") {
         res.status(403).json({ message: "User has already rated this book" });

@@ -1,7 +1,7 @@
 const express = require("express");
 // const mongoose = require("mongoose");
 // const bookRoutes = require("./routes/book");
-const helloRoutes = require("./routes/hello");
+// const helloRoutes = require("./routes/hello");
 // const userRoutes = require("./routes/user");
 // const path = require("path");
 
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // app.use("/api/books", bookRoutes);
-app.use("/api/hello", helloRoutes);
+app.get('/', (req, res) => res.send('Home Page Route'));
 // app.use("/api/auth", userRoutes);
 // app.use("/images", express.static(path.join(__dirname, "images")));
 

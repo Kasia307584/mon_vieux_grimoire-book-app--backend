@@ -1,7 +1,7 @@
 const express = require("express");
 // const mongoose = require("mongoose");
 // const bookRoutes = require("./routes/book");
-// const helloRoutes = require("./routes/hello");
+const helloRoutes = require("./routes/hello");
 // const userRoutes = require("./routes/user");
 // const path = require("path");
 

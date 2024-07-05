@@ -2,13 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
-const path = require("path");
+// const path = require("path");
 
 mongoose
-  .connect(
-    "mongodb+srv://new_user_1:GG6NL2DQWZ6wrP55@clusterforbooksapp.7ka29ua.mongodb.net/?retryWrites=true&w=majority&appName=ClusterForBooksApp",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Successfully connected to MongoDB!"))
   .catch(() => console.log("Failed to connect to MongoDB!"));
 
@@ -31,6 +31,6 @@ app.use(express.json());
 
 app.use("/api/books", bookRoutes);
 app.use("/api/auth", userRoutes);
-app.use("/images", express.static(path.join(__dirname, "images")));
+// app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;

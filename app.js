@@ -5,6 +5,8 @@ const bookRoutes = require("./routes/book");
 // const userRoutes = require("./routes/user");
 // const path = require("path");
 
+console.log(process.env)
+
 mongoose
   .connect(
     process.env.MONGO_URL,

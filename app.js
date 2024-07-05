@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // app.use("/api/books", bookRoutes);
-app.get('/', (req, res) => res.send('Home Page Route'));
+app.use("/api/hello", helloRoutes);
 // app.use("/api/auth", userRoutes);
 // app.use("/images", express.static(path.join(__dirname, "images")));
 

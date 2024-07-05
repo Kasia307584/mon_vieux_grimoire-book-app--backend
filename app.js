@@ -7,7 +7,7 @@ const bookRoutes = require("./routes/book");
 
 mongoose
   .connect(
-    "mongodb+srv://new_user_1:GG6NL2DQWZ6wrP55@clusterforbooksapp.7ka29ua.mongodb.net/?retryWrites=true&w=majority&appName=ClusterForBooksApp",
+    process.env.MONGO_URL,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Successfully connected to MongoDB!"))

@@ -20,6 +20,7 @@ Users should be able to:
 ### Links
 
 - Live Site URL: [See the live page here](https://book-app-frontend-three.vercel.app/)
+- Frontend Repository: [Forked frontend used in this project](https://github.com/Kasia307584/mon_vieux_grimoire-book-app--frontend)
 
 ## My process
 

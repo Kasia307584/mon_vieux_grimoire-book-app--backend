@@ -2,7 +2,7 @@
 
 MonVieuxGrimoire is a full-stack application designed to manage book collections and ratings. The project involved creating a back-end system that integrates with an existing front-end to deliver a seamless user experience. Users can browse a catalog of books, add new entries, delete unwanted ones, and rate books. The foundation of the API was guided by a pre-defined API specification document.
 
-The back-end was built using Node.js and the Express framework, with MongoDB as the database, connected through Mongoose. CRUD operations for books were implemented via structured data models, middleware, controllers, and routes. Secure user authentication, including signup and login functionality, was achieved through encryption and token-based authentication.
+The back-end was built using Node.js and the Express framework, with MongoDB as the database, connected through Mongoose. CRUD operations for books were implemented via structured data models, middleware, controllers, and routes. Secure user authentication, including signup and login functionality, was achieved through hashing and token-based authentication.
 
 ## Overview
 
@@ -21,6 +21,7 @@ Users should be able to:
 
 - Live Site URL: [See the live page here](https://book-app-frontend-three.vercel.app/)
 - Frontend Repository: [Forked frontend used in this project](https://github.com/Kasia307584/mon_vieux_grimoire-book-app--frontend)
+- API specification document: [View predefined API specification document used as a project guideline](https://github.com/Kasia307584/mon_vieux_grimoire-book-app--backend/blob/main/api-docs/api-auth-CRUD.pdf)
 
 ## My process
 
